@@ -55,3 +55,28 @@ void PrintHeader(DWORD file_size, const char* file_in) {
         }
     }
 }
+
+
+int main() {
+    wchar_t* file_name(L"F:\\NSUlabs\\CPP\\dasha\\Example.rar");
+    HANDLE file_handle = CreateFileW(file_name, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if (file_handle == INVALID_HANDLE_VALUE) {
+        std::cout << "Error INVALID_HANDLE_VALUE" << std::endl;
+        return 1;
+    }
+    DWORD file_size = GetFileSize(file_handle, NULL);
+    char* file_in = new char[file_size];
+    DWORD byte_read;
+
+    if (ReadFile(file_handle, file_in, file_size, &byte_read, NULL)) {
+        PrintHeader(file_size, file_in);
+    }
+    else {
+        std::cout << "FileRead Error" << std::endl;
+        return 1;
+    }
+
+    delete[] file_in;
+    return 0;
+}
